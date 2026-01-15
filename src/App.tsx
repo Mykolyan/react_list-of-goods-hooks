@@ -42,11 +42,11 @@ export const App: React.FC = () => {
     return goods;
   }, [sortField, isReversed]);
 
-  const handleSort = (field: string) => {
+  const handleSort = (field: SortType) => {
     if (sortField === field) {
       setIsReversed(!isReversed);
     } else {
-      setSortField(field as SortType);
+      setSortField(field);
     }
   };
 
@@ -61,9 +61,9 @@ export const App: React.FC = () => {
         <button
           type="button"
           className={classNames('button is-primary', {
-            'is-light': sortField !== 'alphabetically',
+            'is-light': sortField !== SortType.Alphabetically,
           })}
-          onClick={() => handleSort('alphabetically')}
+          onClick={() => handleSort(SortType.Alphabetically)}
         >
           Sort alphabetically
         </button>
@@ -71,9 +71,9 @@ export const App: React.FC = () => {
         <button
           type="button"
           className={classNames('button', 'is-link', {
-            'is-light': sortField !== 'length',
+            'is-light': sortField !== SortType.Length,
           })}
-          onClick={() => handleSort('length')}
+          onClick={() => handleSort(SortType.Length)}
         >
           Sort by length
         </button>
