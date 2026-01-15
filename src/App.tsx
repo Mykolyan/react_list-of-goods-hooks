@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useState } from 'react';
 import classNames from 'classnames';
 import 'bulma/css/bulma.css';
@@ -17,26 +17,36 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
+enum SortType {
+  Alphabetically = 'alphabetically',
+  Length = 'length',
+}
+
 export const App: React.FC = () => {
-  const visibleGoods = [...goodsFromServer];
-  const [sortField, setSortField] = useState<string | null>(null);
   const [isReversed, setIsReversed] = useState(false);
+  const [sortField, setSortField] = useState<SortType | null>(null);
 
-  if (sortField === 'alphabetically') {
-    visibleGoods.sort();
-  } else if (sortField === 'length') {
-    visibleGoods.sort((a, b) => a.length - b.length);
-  }
+  const visibleGoods = useMemo(() => {
+    const goods = [...goodsFromServer];
 
-  if (isReversed) {
-    visibleGoods.reverse();
-  }
+    if (sortField === SortType.Alphabetically) {
+      goods.sort();
+    } else if (sortField === SortType.Length) {
+      goods.sort((a, b) => a.length - b.length);
+    }
+
+    if (isReversed) {
+      goods.reverse();
+    }
+
+    return goods;
+  }, [sortField, isReversed]);
 
   const handleSort = (field: string) => {
     if (sortField === field) {
       setIsReversed(!isReversed);
     } else {
-      setSortField(field);
+      setSortField(field as SortType);
     }
   };
 
